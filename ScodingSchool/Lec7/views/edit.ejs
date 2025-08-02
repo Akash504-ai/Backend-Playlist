@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-xl w-full bg-white p-6 rounded-2xl shadow-lg space-y-6">
+      
+      <a href="/" class="text-blue-600 hover:underline text-sm font-medium">
+        ← Back to all tasks
+      </a>
+
+      <h1 class="text-xl font-bold text-gray-800">Edit Task</h1>
+
+      <form action="/edit" method="POST" class="space-y-4">
+        <!-- Display current filename (readonly) -->
+        <input
+          type="text"
+          value="<%= previous %>"
+          class="w-full px-4 py-2 border border-gray-700 rounded-lg bg-gray-100"
+          readonly
+          disabled = "true"
+        />
+        <!-- Hidden input to send previous filename -->
+        <input type="hidden" name="previous" value="<%= previous %>" />
+
+        <!-- New title input -->
+        <input
+          type="text"
+          name="newTitle"
+          placeholder="New Title"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+
+        <!-- Content textarea -->
+        <textarea
+          name="newContent"
+          rows="6"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        ><%= content %></textarea>
+
+        <!-- Submit button -->
+        <input
+          type="submit"
+          value="Update Task"
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition duration-300"
+        />
+      </form>
+    </div>
+  </body>
+</html>

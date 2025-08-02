@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 space-y-6">
+
+      <!-- Header -->
+      <h1 class="text-2xl font-bold text-center text-blue-700">Task Manager</h1>
+
+      <!-- Create Task Form -->
+      <div class="form">
+        <form action="/create" method="post" class="space-y-4">
+          <input
+            type="text"
+            name="title"
+            placeholder="Write the Title"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <textarea
+            name="details"
+            placeholder="Write your task details"
+            rows="4"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          ></textarea>
+          <input
+            type="submit"
+            value="Create Task"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition duration-300"
+          />
+        </form>
+      </div>
+
+      <!-- Tasks List -->
+      <div class="tasks space-y-4">
+        <% if (tasks.length > 0) { %>
+          <% tasks.forEach((task) => { %>
+            <div class="p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-800 mb-1">
+                <%= task.title %>
+              </h2>
+              <p class="text-sm text-gray-600 mb-2"><%= task.details.length > 10 ? task.details.slice(0, 10) + '...' : task.details %></p>
+              <div class="flex gap-4 text-sm">
+                <a
+                  href="/task/<%= task.title %>"
+                  class="text-blue-600 hover:underline font-medium"
+                >
+                  View →
+                </a>
+                <a
+                  href="/edit/<%= task.title %>"
+                  class="text-yellow-600 hover:underline font-medium"
+                >
+                  Edit ✏️
+                </a>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <h3 class="text-center text-gray-500 text-lg font-medium italic">
+            No task yet.
+          </h3>
+        <% } %>
+      </div>
+
+    </div>
+  </body>
+</html>
