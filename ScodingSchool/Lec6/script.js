@@ -42,7 +42,7 @@ app.get('/profile/:username', (req, res) => {
   // req.params.username;
   // res.send('its running');
   res.send(`it is running ${req.params.username}`)
-});
+}); 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
