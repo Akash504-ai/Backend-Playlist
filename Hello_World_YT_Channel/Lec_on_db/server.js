@@ -44,3 +44,27 @@ app.get("/person", async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+app.post("/menu", async (req, res) => {
+  try {
+    const data = req.body;
+    const newMenuItem = new MenuItem(data);
+    const response = await newMenuItem.save();
+    console.log("Menu item saved");
+    res.status(200).json(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/menu", async (req, res) => {
+  try {
+    const data = await MenuItem.find();
+    console.log("Menu items fetched");
+    res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
