@@ -1,16 +1,22 @@
-const express = require('express')
+const express = require("express");
 const router = express.Router();
-const Person = require('../models/Person');
+const Person = require("../models/Person");
 
 router.post("/", async (req, res) => {
   try {
-    const data = req.body;
-    const newPerson = new Person(data);
-    const response = await newPerson.save();
-    console.log("data saved");
+    let data = req.body;
+
+    // If the request is a single object, wrap it in an array
+    if (!Array.isArray(data)) {
+      data = [data];
+    }
+
+    // Insert all at once
+    const response = await Person.insertMany(data);
+    console.log("Data saved");
     res.status(200).json(response);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -26,12 +32,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/:workType', async (req, res) => {
+router.get("/:workType", async (req, res) => {
   try {
     const workType = req.params.workType;
 
     // Validate work type
-    if (!['chef', 'waiter', 'manager'].includes(workType)) {
+    if (!["chef", "waiter", "manager"].includes(workType)) {
       return res.status(400).json({ message: "Invalid work type specified" });
     }
 
@@ -40,19 +46,20 @@ router.get('/:workType', async (req, res) => {
 
     // If no persons found
     if (data.length === 0) {
-      return res.status(404).json({ message: "No persons found with the specified work type" });
+      return res
+        .status(404)
+        .json({ message: "No persons found with the specified work type" });
     }
 
     // Send the data
     res.json(data);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
@@ -77,7 +84,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -99,6 +106,6 @@ router.delete('/:id', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}); 
+});
 
 module.exports = router;

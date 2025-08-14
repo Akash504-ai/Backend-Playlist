@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { use } = require('passport');
+const bcrypt = require('bcrypt');
 
 // Define person schema
 const personSchema = new mongoose.Schema({
@@ -21,7 +23,7 @@ const personSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    // unique: true
   },
   address: {
     type: String
@@ -29,8 +31,37 @@ const personSchema = new mongoose.Schema({
   salary: {
     type: Number,
     required: true
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
   }
 });
+
+personSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    } catch (err) {
+      return next(err);
+    }
+  }
+  next();
+});
+
+personSchema.methods.comparePassword = async function(candidatePassword) {
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (err) {
+    throw new Error(err);
+  }
+}; 
 
 // Create Person model
 const Person = mongoose.model('Person', personSchema);
