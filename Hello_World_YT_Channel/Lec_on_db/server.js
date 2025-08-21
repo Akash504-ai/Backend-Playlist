@@ -41,7 +41,7 @@ const personRoutes = require("./routes/personrouts");
 app.use("/person", personRoutes);
 
 const menuRoutes = require("./routes/menuroutes");
-app.use("/menu", localAuthMiddleware , menuRoutes);
+app.use("/menu", menuRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
